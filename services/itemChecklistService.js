@@ -72,7 +72,179 @@ class itemChecklistService {
                 },
             };
         }
+    };
 
+    static async getItemChecklistById({
+        id,
+        checklist_id,
+    }) {
+        try {
+
+            const getItemChecklistById = await itemChecklistRepository.getItemChecklistById({
+                id,
+                checklist_id,
+            });
+
+            return {
+                status: true,
+                statusCode: 200,
+                message: "Berhasil mendapatkan item checklist",
+                data: {
+                    get_item_checklist_by_id: getItemChecklistById,
+                },
+            };
+        } catch (err) {
+            return {
+                status: false,
+                statusCode: 404,
+                message: "Item checklist tidak ditemukan",
+                data: {
+                    get_item_checklist_by_id: null,
+                },
+            };
+        }
+    };
+
+    static async updateItemChecklist({
+        id,
+        checklist_id,
+    }) {
+        try {
+            const currentItem = await itemChecklistRepository.getItemChecklistById({
+                id,
+                checklist_id,
+            });
+
+            if (!currentItem) {
+                return {
+                    status: false,
+                    statusCode: 404,
+                    message: "Item checklist tidak ditemukan",
+                    data: {
+                        updated_item_checklist: null,
+                    },
+                };
+            }
+
+            const newStatus = !currentItem.itemStatus;
+            const updatedItem = await itemChecklistRepository.updateItemChecklist({
+                id,
+                checklist_id,
+                itemStatus: newStatus
+            });
+
+            return {
+                status: true,
+                statusCode: 200,
+                message: "Status item checklist berhasil diupdate",
+                data: {
+                    updated_item_checklist: updatedItem,
+                },
+            };
+        } catch (err) {
+            return {
+                status: false,
+                statusCode: 500,
+                message: "Gagal mengupdate status item checklist",
+                data: {
+                    updated_item_checklist: null,
+                },
+            };
+        }
+    };
+
+    static async deleteItemChecklist({
+        id,
+        checklist_id,
+    }) {
+        try {
+            const currentItem = await itemChecklistRepository.getItemChecklistById({
+                id,
+                checklist_id,
+            });
+
+            if (!currentItem) {
+                return {
+                    status: false,
+                    statusCode: 404,
+                    message: "Item checklist tidak ditemukan",
+                    data: {
+                        deleted_item_checklist: null,
+                    },
+                };
+            }
+
+            const deletedItem = await itemChecklistRepository.deleteItemChecklist({
+                id,
+                checklist_id
+            });
+
+            return {
+                status: true,
+                statusCode: 200,
+                message: "Item checklist berhasil dihapus",
+                data: {
+                    deleted_item_checklist: deletedItem,
+                },
+            };
+        } catch (err) {
+            return {
+                status: false,
+                statusCode: 500,
+                message: "Gagal menghapus item checklist",
+                data: {
+                    deleted_item_checklist: null,
+                },
+            };
+        }
+    };
+
+    static async updateItemChecklistName({
+        id,
+        checklist_id,
+        itemName
+    }) {
+        try {
+            const currentItem = await itemChecklistRepository.getItemChecklistById({
+                id,
+                checklist_id,
+            });
+
+            if (!currentItem) {
+                return {
+                    status: false,
+                    statusCode: 404,
+                    message: "Item checklist tidak ditemukan",
+                    data: {
+                        updated_item_checklist: null,
+                    },
+                };
+            }
+
+            const updatedItem = await itemChecklistRepository.updateItemChecklistName({
+                id,
+                checklist_id,
+                itemName
+            });
+
+            return {
+                status: true,
+                statusCode: 200,
+                message: "Nama item checklist berhasil diupdate",
+                data: {
+                    updated_item_checklist: updatedItem,
+                },
+            };
+        } catch (err) {
+            return {
+                status: false,
+                statusCode: 500,
+                message: "Gagal mengupdate nama item checklist",
+                data: {
+                    updated_item_checklist: null,
+                },
+            };
+        }
     };
 }
 

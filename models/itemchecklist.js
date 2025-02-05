@@ -17,6 +17,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   itemChecklist.init({
     itemName: DataTypes.STRING,
+    itemStatus: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
     checklist_id: DataTypes.INTEGER,
   }, {
     sequelize,
